@@ -1,4 +1,4 @@
-## AWS Lambda HelloWorld with DynamoDB Config
+# AWS Lambda HelloWorld with DynamoDB Config
 
 This project for `helloWorldFunction` contains the lambda request handler for replying with a hello response to a name parameter, a context wrapper class and some unit tests.
 
@@ -9,3 +9,13 @@ Configuration is stored in a DynamoDB to which the lambda must be given IAM acce
 When executing, the lambda depends on a DynamoDB table entry for the environment keyed on `environmentId` and containing a string property `responseLanguage`.
 
 See accompanying blog post for details <TBC>
+
+### To run the lambda
+
+Set up the DynamoDB table and config entries as described above.
+
+Using Gradle 2.9 or higher, `gradle build` will package the jar and dependencies as a zip file for upload.
+
+Upload the lambda using a function name matching the pattern above. 128MB should be enough memory given the size of the lambda, and set the lambda timeout to 5s. 
+
+**On first cold invocation the lambda will sometimes time out on retrieving a value from DynamoDB but the next warm invocation should return within the expected timeout.** This is something to keep an eye on - I haven't played around with the timeout enough to determine which value would prevent the first cold invocation from timing out.
