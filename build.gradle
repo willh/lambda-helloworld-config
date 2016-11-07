@@ -1,7 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'idea'
 
-
 repositories {
     mavenCentral()
 }
@@ -9,7 +8,12 @@ repositories {
 dependencies {
     compile(
         'com.amazonaws:aws-lambda-java-core:1.1.0',
-        'com.amazonaws:aws-lambda-java-events:1.1.0'
+        'com.amazonaws:aws-lambda-java-events:1.1.0',
+        'com.amazonaws:aws-java-sdk-dynamodb:1.11.49'
+    )
+    testCompile(
+        'junit:junit:4.12',
+        'org.mockito:mockito-core:2.2.11'
     )
 }
 

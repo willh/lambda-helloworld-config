@@ -2,15 +2,15 @@ package com.willhamill;
 
 public class HelloResponse {
 
-    String language;
+    String responseLanguage;
     String greeting;
 
-    public String getLanguage() {
-        return language;
+    public String getResponseLanguage() {
+        return responseLanguage;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
+    public void setResponseLanguage(String responseLanguage) {
+        this.responseLanguage = responseLanguage;
     }
 
     public String getGreeting() {
@@ -21,8 +21,8 @@ public class HelloResponse {
         this.greeting = greeting;
     }
 
-    public HelloResponse(String language, String greeting) {
-        this.language = language;
+    public HelloResponse(String responseLanguage, String greeting) {
+        this.responseLanguage = responseLanguage;
         this.greeting = greeting;
     }
 
