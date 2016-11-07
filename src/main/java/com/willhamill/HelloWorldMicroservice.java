@@ -8,10 +8,14 @@ import java.util.Optional;
 
 public class HelloWorldMicroservice implements RequestHandler<String, HelloResponse> {
 
+    private Item dynamoDbConfigItem;
+
     public HelloResponse handleRequest(String name, Context context) {
         ContextWrapper contextWrapper = new ContextWrapper(context);
-        Item lambdaConfigItem = contextWrapper.getConfigItem();
-        String responseLanguage = lambdaConfigItem.getString("responseLanguage");
+        if (dynamoDbConfigItem == null) {
+            dynamoDbConfigItem = contextWrapper.getConfigItem();
+        }
+        String responseLanguage = dynamoDbConfigItem.getString("responseLanguage");
 
         String envVersion = Optional.ofNullable(context.getFunctionVersion()).orElse("no-alias");
         String functionName = Optional.ofNullable(context.getFunctionName()).orElse("default-name");

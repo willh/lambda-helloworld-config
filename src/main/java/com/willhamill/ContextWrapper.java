@@ -19,6 +19,7 @@ public class ContextWrapper {
     private static final String CONFIG_TABLE_SUFFIX = "Config";
     private static final String DEFAULT_ENVIRONMENT = "test";
     private static final String CONFIG_TABLE_KEY_NAME = "environmentId";
+    private static final String FUNCTION_NAME_SUFFIX_SEPARATOR = "_";
 
     private final Context context;
 
@@ -45,16 +46,17 @@ public class ContextWrapper {
         // assuming naming convention like helloWorldFunction_dev, helloWorldFunction_prd etc
         String functionName = context.getFunctionName();
 
-        boolean containsSuffix = functionName.contains("_");
+        boolean containsSuffix = functionName.contains(FUNCTION_NAME_SUFFIX_SEPARATOR);
 
         if (containsSuffix) {
-            return Optional.of(functionName.substring(functionName.lastIndexOf('_') + 1));
+            return Optional.of(functionName.substring(functionName.lastIndexOf(FUNCTION_NAME_SUFFIX_SEPARATOR) + 1));
         } else {
             return Optional.empty();
         }
     }
 
     public Regions getDeploymentRegion() {
+        // An arn looks like this arn:aws:lambda:eu-west-1:937603462484:function:helloWorldFunction_prd
         String[] arnColonSeparatedTokens = context.getInvokedFunctionArn().split(":");
         String regionName = arnColonSeparatedTokens[3];
         return Regions.fromName(regionName);
