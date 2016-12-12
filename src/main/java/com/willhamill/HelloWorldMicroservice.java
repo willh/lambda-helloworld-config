@@ -1,6 +1,5 @@
 package com.willhamill;
 
-import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.github.mustachejava.DefaultMustacheFactory;
@@ -10,16 +9,20 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Optional;
 
+/*
+    This class acts as the main function handler for the lambda
+ */
 public class HelloWorldMicroservice implements RequestHandler<String, String> {
 
-    private Item dynamoDbConfigItem;
+    private static final String DEFAULT_LANGUAGE = "en-GB";
 
+    /*
+        This method is the main handler for the hello world function,
+        taking a string param and returning a HTML templated response
+        containing a language read in from environment variable config
+     */
     public String handleRequest(String name, Context context) {
-        ContextWrapper contextWrapper = new ContextWrapper(context);
-        if (dynamoDbConfigItem == null) {
-            dynamoDbConfigItem = contextWrapper.getConfigItem();
-        }
-        String responseLanguage = dynamoDbConfigItem.getString("responseLanguage");
+        String responseLanguage = Optional.ofNullable(System.getenv("language")).orElse(DEFAULT_LANGUAGE);
 
         Mustache mustache = new DefaultMustacheFactory().compile("hellopage.mustache");
 
